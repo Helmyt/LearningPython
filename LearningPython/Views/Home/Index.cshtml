@@ -1,0 +1,73 @@
+﻿@{
+    ViewData["Title"] = "Головна сторінка";
+}
+
+<div class="container mt-4">
+    <div class="text-center">
+        @if (User.Identity.IsAuthenticated)
+        {
+            <h1 class="display-4">Ласкаво просимо, @User.Identity.Name</h1>
+            <p class="lead">Продовжуйте свою навчальну подорож з нашими останніми уроками та тестами.</p>
+        }
+        else
+        {
+            <h1 class="display-4">Ласкаво просимо, гість</h1>
+            <h6>Хочете скористатися всіма нашими функціями? Ви можете увійти прямо зараз!</h6>
+            <a class="btn btn-primary btn-lg mt-3" href="/Account/Login">Увійти</a>
+            <a class="btn btn-secondary btn-lg mt-3" href="/Account/Register">Зареєструватися</a>
+        }
+    </div>
+
+    <hr class="my-4">
+
+    <div class="row">
+        <div class="col-lg-4">
+            <div class="card mb-4">
+                <img src="~/img/learning.webp" class="card-img-top" alt="Зображення навчання">
+                <div class="card-body">
+                    <h5 class="card-title">Останні уроки</h5>
+                    <p class="card-text">Перегляньте наші останні уроки, щоб бути в курсі оновлень.</p>
+                    <a href="/Lesson/Index" class="btn btn-primary">Переглянути уроки</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="card mb-4">
+                <img src="~/img/tests.webp" class="card-img-top" alt="Зображення тестів">
+                <div class="card-body">
+                    <h5 class="card-title">Пройти тест</h5>
+                    <p class="card-text">Перевірте свої знання з нашими різноманітними вікторинами та оцінками.</p>
+                    <a href="/Lesson/Index" class="btn btn-primary">Переглянути уроки</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="card mb-4">
+                <img src="~/img/community.webp" class="card-img-top" alt="Зображення спільноти">
+                <div class="card-body">
+                    <h5 class="card-title">Приєднатися до спільноти</h5>
+                    <p class="card-text">Спілкуйтеся з іншими учнями та діліться своїм досвідом.</p>
+                    <a href="/Lesson/Index" class="btn btn-primary">Переглянути уроки</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <hr class="my-4">
+
+    <div class="text-center">
+        <h2 class="mb-4">Чому обирають нас?</h2>
+        <p class="lead">Наша платформа пропонує комплексний навчальний досвід з такими особливостями:</p>
+        <ul class="list-unstyled">
+            <li><i class="fas fa-check-circle text-success"></i> Високоякісні уроки та навчальні матеріали</li>
+            <li><i class="fas fa-check-circle text-success"></i> Інтерактивні вікторини та оцінки</li>
+            <li><i class="fas fa-check-circle text-success"></i> Підтримуюча навчальна спільнота</li>
+            <li><i class="fas fa-check-circle text-success"></i> Персоналізовані навчальні траєкторії</li>
+        </ul>
+    </div>
+</div>
+
+<!-- Ensure to include FontAwesome for the icons -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">

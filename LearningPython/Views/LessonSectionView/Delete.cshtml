@@ -1,0 +1,40 @@
+﻿@using LearningPython.BLL.Data.Enums
+@using LearningPython.DAL.Models
+@model Section
+
+<h1 class="mb-2">Ви впевненні в тому щоб видалити цю секцію?</h1>
+
+@{
+    ViewData["Title"] = "Видалити секцію";
+}
+
+<div class="container mt-4">
+    <div class="card">
+        <div class="card-header">
+            Видалити секцію
+        </div>
+        <form asp-action="Delete" method="post">
+            <div class="card-body">
+                <h5 class="card-title">Змінити Секцію</h5>
+                <div class="form-group">
+                    <label class="font-weight-bold">Назва Секції</label>
+                    <p class="form-control-static">@Model.Title</p>
+                </div>
+                <div class="form-group">
+                    <label class="font-weight-bold">Текст</label>
+                    <p class="form-control-static">@Model.Text</p>
+                </div>
+                <div class="form-group">
+                    <label class="font-weight-bold">Приклад коду</label>
+                    <p class="form-control-static">@Model.Code</p>
+                </div>
+                <div class="form-group">
+                    <label class="font-weight-bold">Зоображення</label>
+                    <img src="@Model.Image" alt="Section Image" style="max-width: 200px; height: auto;">
+                </div>
+                <button type="submit" class="btn btn-danger">Видалити</button>
+                <a asp-action="Index" asp-route-id="@Model.LessonId" class="btn btn-secondary">Відмінити</a>
+            </div>
+        </form>
+    </div>
+</div>

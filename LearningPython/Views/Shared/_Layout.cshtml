@@ -1,0 +1,96 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+@{
+    var isLessonView = Context.GetRouteData().Values["controller"]?.ToString().Equals("Lesson", StringComparison.OrdinalIgnoreCase) ?? false;
+}
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Learning Python</title>
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+    <link rel="stylesheet" href="~/css/theme.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/croppie.min.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/custom.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/entypo.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/socicon.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/ABMFitness.styles.css" asp-append-version="true" />
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container-fluid">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">LP</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="Lesson" asp-action="Index">Знайти урок для себе</a>
+                        </li>
+                        @if (isLessonView)
+                        {
+                            <form asp-controller="Lesson" asp-action="Index" method="get" class="form-inline">
+                                <input type="text" name="searchTerm" class="form-control mr-sm-2" placeholder="Знайти по назві">
+                                <button type="submit" class="btn btn-outline-success my-2 my-sm-0">Пошук</button>
+                            </form>
+                        }
+                        <ul class="navbar-nav ml-auto">
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Профіль
+                                    </a>
+                                    <div class="dropdown-menu" aria-labelledby="userDropdown">
+                                        <a class="dropdown-item" asp-area="" asp-controller="Account" asp-action="Profile">Профіль</a>
+                                        <a class="dropdown-item" asp-area="" asp-controller="Account" asp-action="Logout">Вийти з системи</a>
+                                    </div>
+                                </li>
+                            }
+                            else
+                            {
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link" href="#" id="authDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Авторизація в систему
+                                    </a>
+                                    <div class="dropdown-menu" aria-labelledby="authDropdown">
+                                        <a class="dropdown-item" asp-area="" asp-controller="Account" asp-action="Register">Зареєструватись</a>
+                                        <a class="dropdown-item" asp-area="" asp-controller="Account" asp-action="Login">Логін</a>
+                                    </div>
+                                </li>
+                            }
+                        </ul>
+                </div>
+                <!--end nav collapse-->
+        </nav>
+        </div>
+        <!--end of container-->
+        </div>
+        </div>
+        <div class="main-container">
+            <main role="main" class="pb-3">
+                @RenderBody()
+            </main>
+        </div>
+
+        <footer class="bg-gray text-light footer-long">
+            <div class="container">
+                <div class="row">
+                    <a class="text" asp-area="" asp-controller="Home" asp-action="Index" id="logo-text">Learning Python</a>
+                </div>
+            </div>
+        </footer>
+        <script src="~/js/jquery.min.js"></script>
+        <script src="~/js/croppie.min.js"></script>
+        <script src="~/js/bootstrap.js"></script>
+        <script src="~/js/theme.js"></script>
+        @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

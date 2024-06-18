@@ -1,0 +1,108 @@
+﻿@using LearningPython.BLL.Data.Enums
+@using LearningPython.Web.ViewModels.LessonVM
+@model IndexViewModel
+
+@{
+    bool isAuthenticated = User.Identity?.IsAuthenticated == true;
+
+    int resultStart = ((Model.Page - 1) * Model.PageSize) + 1;
+    int resultEnd = Math.Min(resultStart + Model.PageSize - 1, Model.TotalLessons);
+
+    bool isValidPage = resultStart <= Model.TotalLessons;
+
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+
+
+<section class="space-sm flush-with-above">
+    <div class="container">
+        <div class="row">
+            <div class="col text-center">
+                <p>Категорії</p>
+                <div class="mb-3">
+                    <a type="button" class="btn btn-secondary mb-1" asp-action="Index" asp-route-page="1" asp-route-tag="-1">Всі</a>
+                    @foreach (var tag in Html.GetEnumSelectList<LessonTag>())
+                    {
+                        <a type="button" class="btn btn-secondary mb-1" asp-action="Index" asp-route-page="1" asp-route-tag="@tag.Value">@tag.Text</a>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                @if (isValidPage)
+                {
+                    <a type="button" class="btn btn-sm btn-outline-primary @prevDisabled"
+                   asp-action="Index" asp-route-page="@(Model.Page - 1)" asp-route-tag="@Model.Tag">
+                        Попередня сторінка
+                    </a>
+                    <a type="button" class="btn btn-sm btn-outline-primary @nextDisabled"
+                   asp-action="Index" asp-route-page="@(Model.Page + 1)" asp-route-tag="@Model.Tag">
+                        Наступна сторінка
+                    </a>
+                    <span class="text-muted text-small">Results @resultStart - @resultEnd of @Model.TotalLessons</span>
+                }
+            </div>
+        </div>
+        <ul class="row feature-list feature-list-sm">
+            @foreach (var lesson in Model.Lessons)
+            {
+                <li class="col-12 col-md-6 col-lg-4">
+                    <div class="card">
+                        <a type="button" asp-controller="LessonSectionView" asp-action="Index" asp-route-id="@lesson.Id">
+                            <img class="card-img-top" max-width="100%" height="175" object-fit="contain" src="@lesson.Image" alt="Card image cap">
+                        </a>
+                        <div class="card-body">
+                            <h4 class="card-title">@lesson.Title</h4>
+                            <p class="card-text">@lesson.Description</p>
+                        </div>
+                        <div class="card-footer card-footer-borderless d-flex justify-content-between">
+                            <div>
+                                <small>@lesson.LessonTag</small>
+                            </div>
+                            @if (isAuthenticated && User.IsInRole("admin"))
+                            {
+                                <div>
+                                    <a type="button" class="btn btn-sm btn-outline-info" asp-controller="Lesson" asp-action="Edit" asp-route-id="@lesson.Id">
+                                        Змінити
+                                    </a>
+                                    <a type="button" class="btn btn-sm btn-outline-danger" asp-controller="Lesson" asp-action="Delete" asp-route-id="@lesson.Id">
+                                        Видалити
+                                    </a>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </li>
+            }
+        </ul>
+        
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                @if (isValidPage)
+                {
+                    <a type="button" class="btn btn-sm btn-outline-primary @prevDisabled"
+                   asp-action="Index" asp-route-page="@(Model.Page - 1)" asp-route-tag="@Model.Tag">
+                        Попередня сторінка
+                    </a>
+                    <a type="button" class="btn btn-sm btn-outline-primary @nextDisabled"
+                   asp-action="Index" asp-route-page="@(Model.Page + 1)" asp-route-tag="@Model.Tag">
+                        Наступна сторінка
+                    </a>
+                    <span class="text-muted text-small">Results @resultStart - @resultEnd of @Model.TotalLessons</span>
+                } else {
+                    <p>Вибачте, але здається що ця вкладка ще немає доданих уроків!</p>
+                }
+            </div>
+        </div>
+        @if (isAuthenticated && User.IsInRole("admin"))
+        {
+            <a type="button" class="btn btn-success btn-lg" asp-controller="Lesson" asp-action="Create">
+                Створити новий урок
+            </a>
+        }
+    </div>
+</section>

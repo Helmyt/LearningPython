@@ -1,0 +1,74 @@
+﻿@using LearningPython.BLL.Data.Enums;
+@using LearningPython.Web.ViewModels.TestQuestionVM
+
+@model IndexViewModel
+@{
+    ViewData["Title"] = "Test Your Knowledge";
+    bool isAuthenticated = User.Identity?.IsAuthenticated == true;
+}
+
+<div class="container mt-4">
+    <div class="album py-5 bg-light">
+        <h2 class="display-4 fw-normal">@Model.Title</h2>
+        @if (Model.TestQuestions.Any())
+        {
+            <form asp-action="SubmitTest" method="post">
+                <input type="hidden" asp-for="LessonId" />
+                @for (int i = 0; i < Model.TestQuestions.Count; i++)
+                {
+                    var question = Model.TestQuestions[i];
+                    <div class="mb-4 p-3 shadow-sm rounded bg-white">
+                        <div class="form-group">
+                            <label>@question.Text</label>
+                            @if (question.Image != null)
+                            {
+                                <div class="text-center">
+                                    <img src="@question.Image" class="img-fluid" alt="Question Image" style="max-width: 100%; height: auto;">
+                                </div>
+                            }
+                            <input type="hidden" name="Answers[@i].TestQuestionId" value="@question.Id" />
+                            @if (question.Category == TestCategory.Quiz)
+                            {
+                                @foreach (var option in question.Options)
+                                {
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="Answers[@i].UserAnswer" value="@option" required>
+                                        <label class="form-check-label">@option</label>
+                                    </div>
+                                }
+                            }
+                            else
+                            {
+                                <input type="text" class="form-control mt-2" name="Answers[@i].UserAnswer" placeholder="Type your answer here" required>
+                            }
+                        </div>
+                        @if (isAuthenticated && User.IsInRole("admin"))
+                        {
+                            <div class="mt-2">
+                                <a asp-action="Delete" asp-route-id="@question.Id" class="btn btn-sm btn-danger">Видалити</a>
+                            </div>
+                        }
+                    </div>
+                }
+                @if (!User.IsInRole("admin"))
+                {
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary">Підтвердити відповіді</button>
+                    </div>
+                }
+            </form>
+        }
+        else
+        {
+            <div class="alert alert-info" role="alert">
+                Ще поки немає ніяких тестів.
+            </div>
+        }
+        @if (isAuthenticated && User.IsInRole("admin"))
+            {
+                <a type="button" class="btn btn-success btn-lg" asp-controller="TestQuestion" asp-action="Create" asp-route-id="@Model.LessonId">
+                    Створити новий тест
+                </a>
+            }
+    </div>
+</div>

@@ -1,0 +1,74 @@
+﻿@using LearningPython.Web.ViewModels.AccountVM
+@model ProfileViewModel
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card mb-4">
+                <div class="card-body text-center">
+                    @if (string.IsNullOrEmpty(Model.Image))
+                    {
+                        <img src="@(Url.Content("~/img/blank.jpg"))" alt="Profile Image" class="rounded-circle img-fluid" style="max-width: 150px; height: auto;">
+                    }
+                    else
+                    {
+                        <img src="@Model.Image" class="rounded-circle img-fluid" style="max-width: 150px; height: auto;">
+                    }
+                    <h5 class="mt-2">@Model.UserName</h5>
+                    <p class="text-muted">@Model.EmailAddress</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-8">
+            <div class="card mb-4">
+                <div class="card-header">User Profile</div>
+                <div class="card-body">
+                    <p><strong>Email Address:</strong> @Model.EmailAddress</p>
+                    <p><strong>Username:</strong> @Model.UserName</p>
+                </div>
+            </div>
+
+            <div class="card mt-4">
+                <div class="card-header">Test History</div>
+                <div class="card-body">
+                    @if (Model.TestHistorySummaries != null && Model.TestHistorySummaries.Any())
+                    {
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Lesson Title</th>
+                                    <th>Amount of Questions</th>
+                                    <th>Answered Right</th>
+                                    <th>Percentage</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var summary in Model.TestHistorySummaries)
+                                {
+                                    <tr>
+                                        <td>@summary.LessonTitle</td>
+                                        <td>@summary.TotalQuestions</td>
+                                        <td>@summary.CorrectAnswers</td>
+                                        <td>@summary.Percentage %</td>
+                                        <td>
+                                            <form asp-action="DeleteTestHistory" method="post">
+                                                <input type="hidden" name="lessonId" value="@summary.LessonId" />
+                                                <button type="submit" class="btn btn-danger">Delete</button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
+                    else
+                    {
+                        <p>No test history available.</p>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

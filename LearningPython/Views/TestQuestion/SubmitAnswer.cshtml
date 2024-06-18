@@ -1,0 +1,36 @@
+﻿@using LearningPython.Web.ViewModels.TestQuestionVM;
+@model SubmitAnswerVM;
+
+
+@{
+    ViewData["Title"] = "Test Results";
+}
+
+<div class="container mt-4">
+    <h2 class="display-4">Результати тесту</h2>
+    <div class="card mb-4 shadow-sm">
+        <div class="card-body">
+            <h5>Загальна кількість питань: @Model.TotalQuestions</h5>
+            <h5>Правильні відповіді: @Model.CorrectAnswers</h5>
+            <h5>Відцоток правильних відповідей: @Model.SuccessPercentage%</h5>
+        </div>
+    </div>
+
+    @foreach (var answer in Model.Answers)
+    {
+        <div class="card mb-3 @(answer.IsCorrect == true ? "border-success" : "border-danger")">
+            <div class="card-body">
+                <h5 class="card-title">Питання: @answer.QuestionText</h5>
+                <p class="card-text">Ваша відповідь: @answer.UserAnswer</p>
+                @if (answer.IsCorrect == true)
+                {
+                    <span class="badge badge-success">Правильна відповідь</span>
+                }
+                else
+                {
+                    <span class="badge badge-danger">Помилкова відповідь</span>
+                }
+            </div>
+        </div>
+    }
+</div>

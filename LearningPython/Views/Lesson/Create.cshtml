@@ -1,0 +1,39 @@
+﻿@using LearningPython.Web.ViewModels.LessonVM
+@using LearningPython.BLL.Data.Enums
+@model CreateViewModel
+
+<div class="container mt-4">
+    <div class="card">
+        <div class="card-header">
+            Створити новий урок
+        </div>
+        <div class="card-body">
+            <form method="post" asp-action="Create" enctype="multipart/form-data">
+                <input type="hidden" id="UserId" name="UserId" asp-for="UserId" />
+                <div class="form-group">
+                    <label asp-for="Title">Назва уроку</label>
+                    <input asp-for="Title" class="form-control" placeholder="Введіть назву">
+                    <span asp-validation-for="Title" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Description">Опис</label>
+                    <input asp-for="Description" class="form-control" placeholder="Введіть опис">
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="LessonTag">Категорія</label>
+                    <select asp-for="LessonTag" asp-items="@Html.GetEnumSelectList<LessonTag>()" class="form-control">
+                        <option>--Обрати--</option>
+                    </select>
+                    <span asp-validation-for="LessonTag" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="LessonImage">Зоображення</label>
+                    <input asp-for="LessonImage" class="form-control" placeholder="Виберіть зоображення">
+                    <span asp-validation-for="LessonImage" type="file" class="text-danger"></span>
+                </div>
+                <button type="submit" class="btn btn-primary">Підтвердити</button>
+            </form>
+        </div>
+    </div>
+</div>

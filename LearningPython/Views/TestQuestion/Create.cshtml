@@ -1,0 +1,83 @@
+﻿@using LearningPython.BLL.Data.Enums;
+@using LearningPython.Web.ViewModels.TestQuestionVM
+@model CreateViewModel
+
+@{
+    ViewData["Title"] = "Create Test Question";
+}
+
+<div class="container mt-4">
+    <div class="card">
+        <div class="card-header">Створити нове питання тесту</div>
+        <form asp-action="Create" method="post" enctype="multipart/form-data" id="testQuestionForm">
+            <input type="hidden" id="LessonId" name="LessonId" asp-for="LessonId" />
+            <div class="card-body">
+                <div class="form-group">
+                    <label for="category">Категорія</label>
+                    <select class="form-control" id="category" name="Category" onchange="toggleOptions()">
+                        <option value="@((int)TestCategory.Quiz)">Quiz</option>
+                        <option value="@((int)TestCategory.AnswerInput)">Input</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="text">Текст</label>
+                    <textarea class="form-control" id="text" name="Text" rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="correctAnswer">Правильна відповідь</label>
+                    <input type="text" class="form-control" id="correctAnswer" name="CorrectAnswer">
+                </div>
+                <div class="form-group">
+                    <label for="image">Зоображення</label>
+                    <input type="file" class="form-control-file" id="image" name="Image">
+                </div>
+                <div class="form-group d-none" id="optionsContainer">
+                    <label for="options">Варіанти</label>
+                    <div id="optionsList">
+                        <div class="input-group mb-2">
+                            <input type="text" class="form-control" name="Options[]" placeholder="Варіант відповіді (неправильний)">
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary remove-option" type="button" onclick="removeOption(this)">Видалити</button>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-secondary mb-2" onclick="addOption()">Додати</button>
+                </div>
+                <button type="submit" class="btn btn-primary">Створити питання</button>
+                <a asp-action="Index" asp-route-id="@Model.LessonId" class="btn btn-secondary">Відмінити</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    function toggleOptions() {
+        var category = document.getElementById('category').value;
+        var optionsContainer = document.getElementById('optionsContainer');
+        if (category == "@((int)TestCategory.Quiz)") {
+            optionsContainer.classList.remove('d-none');
+        } else {
+            optionsContainer.classList.add('d-none');
+        }
+    }
+
+    function addOption() {
+        var optionsList = document.getElementById('optionsList');
+        var newOption = document.createElement('div');
+        newOption.classList.add('input-group', 'mb-2');
+        newOption.innerHTML = `
+                <input type="text" class="form-control" name="Options[]" placeholder="Варіант відповіді (неправильний)">
+                <div class="input-group-append">
+                    <button class="btn btn-outline-secondary remove-option" type="button" onclick="removeOption(this)">Видалити</button>
+                </div>
+            `;
+        optionsList.appendChild(newOption);
+    }
+
+    function removeOption(button) {
+        var option = button.closest('.input-group');
+        option.parentNode.removeChild(option);
+    }
+
+    document.addEventListener('DOMContentLoaded', toggleOptions);
+</script>

@@ -1,0 +1,22 @@
+﻿@import url('https://fonts.googleapis.com/css2?family=Jua&display=swap');
+
+#logo-text {
+    font-family: "Jua", sans-serif;
+    font-size: 2rem;
+    color: #02B875;
+}
+
+#logo-green {
+    font-family: "Jua", sans-serif;
+    font-size: 2rem;
+}
+
+.text-container {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 10px;
+    margin: 20px 0;
+    white-space: pre-wrap; /* This ensures that long lines are wrapped */
+    font-family: inherit; /* Use the same font as the rest of the text */
+}

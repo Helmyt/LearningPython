@@ -1,0 +1,51 @@
+﻿@using LearningPython.Web.ViewModels.LessonSectionViewVM
+@using LearningPython.BLL.Data.Enums
+@model EditViewModel
+
+@{
+    ViewData["Title"] = "Змінити Секцію";
+}
+
+<div class="container mt-4">
+    <h2 class="mb-3">Змінити Секцію</h2>
+    <form asp-action="Edit" method="post" enctype="multipart/form-data">
+        <input type="hidden" id="Id" name="Id" asp-for="Id" />
+        <input type="hidden" id="LessonId" name="LessonId" asp-for="LessonId" />
+        <div class="form-group">
+            <label for="title">Заговолок Секції</label>
+            <input type="text" class="form-control" id="title" name="title" value="@Model.Title">
+        </div>
+        <div class="form-group">
+            <label for="text">Текст</label>
+            <textarea class="form-control" id="text" name="text" rows="3">@Model.Text</textarea>
+        </div>
+        <div class="form-group">
+            <label asp-for="Code" class="control-label"></label>
+            <textarea asp-for="Code" class="form-control" rows="10" style="font-family: monospace; white-space: pre;"></textarea>
+            <span asp-validation-for="Code" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label for="image">Зоображення</label>
+            <input type="file" class="form-control-file" id="image" name="image">
+            <div>
+                <img src="@Model.ImageURL" alt="Current Image" style="max-width: 200px; height: auto;">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="jsfile">JS Файл</label>
+            <input type="file" class="form-control-file" id="jsfile" name="jsfile">
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="JsWidth">Ширина Canvas</label>
+                <input type="number" class="form-control" id="JsWidth" name="JsWidth" placeholder="Введіть ширину">
+            </div>
+            <div class="form-group col-md-6">
+                <label for="JsHeight">Висота Canvas</label>
+                <input type="number" class="form-control" id="JsHeight" name="JsHeight" placeholder="Введіть висоту">
+            </div>
+        </div>
+        <button type="submit" class="btn btn-success">Підтвердити</button>
+        <a asp-action="Index" asp-route-id="@Model.LessonId" class="btn btn-secondary">Відмінити</a>
+    </form>
+</div>
